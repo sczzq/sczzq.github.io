@@ -15,7 +15,33 @@ tags:
 Pattern-Oriented Software Architecture  
 Volume 2  
 
-Patterns for Concurrent and Networkded Objects  
+Patterns for Concurrent and Networked Objects  
+
+有助于简化并发和联网应用程序的四个重要方面：  
+- 服务访问和配置  
+- 事件处理  
+- 同步  
+- 并发  
+
+开发并发服务器程序时的挑战：  
+- 封装底层的的操作系统API  
+- 将事件分离与连接管理同协议处理分离  
+- 通过多线程按比例提升服务器程序的性能  
+- 实现同步请求队列  
+- 最小化服务器程序的线程开销  
+- 有效利用异步I/O  
+- 增强服务器程序的可配置性  
+
+在典型的服务器中使用的模式有：  
+- Component Configurator  
+- Half-Sync/Half-Async  
+- Monitor Object
+- Wrapper Facade  
+- Acceptor-Connector  
+- Leader/Follower  
+- Reactor  
+- Proactor  
+
 
 ## 服务访问和配置模式  
 
@@ -187,7 +213,15 @@ if (!flag)
 
 ### Monitor Object 模式  
 
+背景：多个线程访问同一个对象  
+
 同步并发的方法调用，确保每次只运行对象的一个方法，它还让对象的方法彼此协调，以安排他们的执行顺序。  
+
+包含四个组件：  
+- 监视器对象  
+- 监视器锁  
+- 监视器条件  
+- 同步方法  
 
 
 ### Half-Sync/Half-Async 模式  
@@ -196,6 +230,10 @@ if (!flag)
 它引入了两个相互通信的层，一层处理异步服务，一层处理同步服务。  
 
 使适合同步操作的使用同步服务，使适合异步操作的使用异步服务。  
+
+在单独的线程中同步请求，但并发的处理请求。  
+也即是将请求放入全局唯一的请求队列，多个线程同步的从请求队列中取出请求而并发的处理请求。  
+
 
 ### Leader/Followers 模式  
 
@@ -206,6 +244,10 @@ if (!flag)
 - 线程池  
 - 事件处理程序  
 - 具体事件处理程序  
+
+线程，或执行体，三个状态，Leader, Follower, Worker  
+Leader监听事件，若有事件发生，那么就变成Worker，并激活一个Follower为Leader  
+Worker完成后，变成Follower  
 
 
 ### Thread-Specific Storage 模式  
