@@ -10,6 +10,8 @@ tags:
 - patterns
 ---
 
+> 高，很高，架上望远镜，架上显微镜。
+
 Pattern-Oriented Software Architecture  
 Volume 2  
 
