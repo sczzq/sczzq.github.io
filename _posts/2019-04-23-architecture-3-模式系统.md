@@ -421,7 +421,7 @@ View Handler，如何管理软件系统中的视图。
 
 这类模式帮助统筹组件间通信。  
 Forwarder-Receiver 致力于点对点通信，实现了封装。  
-Client-Dispatch-Server 描述了如何在客户端和服务器之间实现位置透明的通信。  
+Client-Dispatcher-Server 描述了如何在客户端和服务器之间实现位置透明的通信。  
 
 #### Forwarder-Receiver  
 
