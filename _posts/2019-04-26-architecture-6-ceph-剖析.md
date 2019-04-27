@@ -145,6 +145,7 @@ erasure code有多种实现：
 - jerasure  
 - lrc  
 - shec  
+
 这些都在erasure-code下面，isa-l作为第三方库在上一级目录。  
 在erasure-code下面的ErasureCode类只是作为具体实现的父类，充当哨兵。  
 类继承关系为 ErasureCodeXXX -> ErasureCode -> ErasureCodeInterface  
