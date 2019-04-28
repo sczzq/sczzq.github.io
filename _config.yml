@@ -61,8 +61,8 @@ defaults:
       comments: true
 
 # Atom feed
-feed:
-  path: atom.xml
+#feed:
+#  path: atom.xml
 
 # Plugins
 ## Docs: https://help.github.com/articles/configuring-jekyll-plugins/
