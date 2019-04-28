@@ -5,8 +5,8 @@
 
 # Site
 title: SCZZQ Blog
-subtitle:
-description:
+subtitle: ziqiang_free@163.com
+description: A Software Engineer
 author: SCZZQ
 # Support language: de, en, fr-FR, id, ja, ko, pt-BR, pt, ru, zh-Hans, zh-hk, zh-tw
 language: en
@@ -16,7 +16,7 @@ date_format: '%Y-%m-%d'
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com' and baseurl as '/child'
 url:
 baseurl:
-permalink: pretty
+# permalink: pretty
 
 # Pagination
 paginate: 10
@@ -69,7 +69,7 @@ feed:
 plugins:
  - jemoji
  - jekyll-sitemap
- - jekyll-feed
+# - jekyll-feed
 
 # ---------------------------------------------------------------
 # Site Information Settings
