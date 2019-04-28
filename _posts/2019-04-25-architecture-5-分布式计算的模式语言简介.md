@@ -3,11 +3,10 @@ title: 模式简介四
 date: 2019-04-26
 categories:
 - Tech
-- Patterns
+- patterns
 - distributed computing
 tags:
 - blog
-- post
 - patterns
 - distributed computing
 ---

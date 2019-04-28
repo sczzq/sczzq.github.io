@@ -3,7 +3,7 @@ title: 模式简介二
 date: 2019-04-23
 categories:
 - Tech
-- Patterns
+- patterns
 tags:
 - blog
 - post

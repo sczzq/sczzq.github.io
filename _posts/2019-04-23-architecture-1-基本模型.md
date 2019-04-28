@@ -4,11 +4,11 @@ date: 2019-04-22
 categories:
 - Tech
 - architecture
-- models
+- patterns
 tags:
 - blog
 - architecture
-- models
+- patterns
 ---
 
 > 充分发挥每个人的潜力 --- 管理目标之一  

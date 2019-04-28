@@ -3,8 +3,8 @@ title: ceph系统的模式语言剖析
 date: 2019-04-26
 categories:
 - Tech
-- Patterns
 - ceph
+- patterns
 tags:
 - blog
 - ceph

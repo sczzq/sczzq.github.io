@@ -3,7 +3,7 @@ title: 模式简介三
 date: 2019-04-25
 categories:
 - Tech
-- Patterns
+- patterns
 - resource management
 tags:
 - blog
