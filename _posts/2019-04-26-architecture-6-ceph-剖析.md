@@ -23,6 +23,7 @@ tags:
 通信协议，客户端库，客户端实现，  
 存储集群，集群拓扑图，集群状态，  
 （保证集群拓扑图的）一致性算法，认证框架，  
+用户，密钥(keyring)，  
 部署工具，Web控制面板，  
 结对操作，对等体集合，对等体集合的主存储进程，  
 消息体，心跳，服务发现，  
@@ -137,15 +138,9 @@ KineticStore、LevelDBStore、MemDB、RocksDBStore是具体类，
 
 数据容错性模块  
 数据容错性，有两种方式，副本复制，纠删码编码  
-纠删码编码是一个单独的模块  
 副本复制是osd中的一个类   
-erasure code有多种实现：  
-- clay  
-- isa  
-- jerasure  
-- lrc  
-- shec  
-
+纠删码编码是一个单独的模块  
+erasure code有多种实现：clay, isa, jerasure, lrc, shec  
 这些都在erasure-code下面，isa-l作为第三方库在上一级目录。  
 在erasure-code下面的ErasureCode类只是作为具体实现的父类，充当哨兵。  
 类继承关系为 ErasureCodeXXX -> ErasureCode -> ErasureCodeInterface  
@@ -173,7 +168,7 @@ caching模式增加了性能，但是caching层次太多，需要协调的关系
 
 数据压缩模块  
 Compressor是接口类  
-实现的有几种压缩方式：brotli，lz4，snappy，zlib，zstd
+实现的有几种压缩方式：brotli，lz4，snappy，zlib，zstd  
 也就是将各个库进行类的封装，并实现Compressor的接口    
 
 
@@ -208,15 +203,15 @@ manager应当是使用的Front Controller模式。
 这样看的话，使用Domain Model进行划分和分析。  
 抽象概念的实现，数据存放在哪里，如何保证数据的容错性，如何支持扩展性，如何完成数据恢复，甚至怎么做数据迁移，还要保证高性能，支持高并发和大的事务数，支持大的吞吐量   
 这些抽象概念是和网络处理模块的概念分离开的，它们属于不同的具体领域。  
--- 数据存放位置，高性能，这些由CRUSH算法及其实现来保证。  
--- 数据容错性，可扩展性，数据恢复，这些也由CRUSH算法来支持，还需要其它概念和实现，  
+数据存放位置，高性能，这些由CRUSH算法及其实现来保证。  
+数据容错性，可扩展性，数据恢复，这些也由CRUSH算法来支持，还需要其它概念和实现，  
 用复制多份和纠删码编码来支持数据容错性，  
 用重平衡来保证这三项，用回填概念来实现扩展性中的数据的分散性。  
 
 若将功能分层，  
--- 第一层，是CRUSH算法及其实现，  
--- 第二层，是数据容错性及其实现，  
--- 第三层，是数据存储接口及其实现。  
+第一层，是CRUSH算法及其实现，  
+第二层，是数据容错性及其实现，  
+第三层，是数据存储接口及其实现。  
 
 数据存储接口是做什么的？数据存储接口将数据保存下来，直接保存下来，而不做更多的处理了。数据存储最终会将数据保存到系统的文件系统(使用filestore)，块设备(使用bluestore)，内存(使用memstore)中，也有数据保存到其它的单机对象存储引擎(比如LevelDB,RocksDB等)。  
 
@@ -229,6 +224,49 @@ manager应当是使用的Front Controller模式。
 
 还有数据清理，定期检查数据，来保证数据的有效性，防止硬件级别的错误。  
 
+可扩展性的支持，对以上抽象概念的操作，包括增删改查，
+比如，对象的增删改查，也就是客户端或者真正需要处理的事务，
+需要增删改查的抽象概念有，对象，池，存放组，存储进程，用户，密钥(keyring)
+每一个增删改查会引起其它的抽象概念的登场，
+维持系统的功能和特性也是需要一些其它概念的实现，
+
+Message 消息类型：  
+monitor internal  
+monitor <-> mon admin tool  
+osd internal  
+mds  
+generic  
+special  
+ceph-mgr <-> OSD/MDS daemons  
+ceph-mgr <-> ceph-mon  
+ceph-mon(mgrmonitor) -> osd/mds daemons  
+ceph-mon(mgrmonitor) -> ceph-mgr  
+cephmgr -> ceph-mon  
+message完成了序列化消息到消息类的解析，以及消息类进行序列化的过程。  
+另外，
+
+对象交互，Processor引用Messenger，Worker，  
+AsyncMessenger引用NetworkStack，Processor，DispatchQueue，Worker，AsyncConnectionRef，EventCallbackRef，  
+AsyncMessenger建立连接并维护连接，往连接类中提交Message  
+
+Processor类监听端口、建立连接、销毁连接，但是将执行函数提交到Worker中  
+每一个监听端口建立一个Processor放到AsyncMessenger中  
+Worker册center，submit_to有提交事务接口，有开启线程接口  
+AsyncMessenger开启Processor的线程，开启dispatch_queue的流程  
+
+AsyncConnection维护两个终端的逻辑会话。  
+也就是说，一对地址可以找到唯一的一个连接，AsyncConnection  
+AsyncConnection处理网络错误和读写事务  
+如果一个文件描述符断了，AsyncConnection负责维护message queue和序列化，并尝试重连   
+AsyncConnection引用AsyncMessenger，DispatchQueue，EventCallbackRef，Worker，EventCenter，Protocol
+AsyncConnection在发送数据之前，经Protocol进行协议封装，然后放入队列中进行发送。  
+
+
+DispatchQueue包含所有需要分发消息的连接，按照消息的优先级组织，以轮询的风格执行分发    
+
+EventCenter，所有的网络事件都在这里注册，监听，使用epoll, kqueue, select等。  
+
+Worker拥有EventCenter
 
 END  
   
