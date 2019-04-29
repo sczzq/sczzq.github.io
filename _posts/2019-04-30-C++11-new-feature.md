@@ -3,9 +3,11 @@ title: C++11新特性
 date: 2019-04-30
 categories:
 - Tech
+- c++
 - c++11
 tags:
 - blog
+- c++
 - c++11
 ---
 
