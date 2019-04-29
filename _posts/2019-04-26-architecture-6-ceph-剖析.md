@@ -245,13 +245,14 @@ cephmgr -> ceph-mon
 message完成了序列化消息到消息类的解析，以及消息类进行序列化的过程。  
 另外，
 
+
 对象交互，Processor引用Messenger，Worker，  
 AsyncMessenger引用NetworkStack，Processor，DispatchQueue，Worker，AsyncConnectionRef，EventCallbackRef，  
 AsyncMessenger建立连接并维护连接，往连接类中提交Message  
 
 Processor类监听端口、建立连接、销毁连接，但是将执行函数提交到Worker中  
 每一个监听端口建立一个Processor放到AsyncMessenger中  
-Worker册center，submit_to有提交事务接口，有开启线程接口  
+注册到Worker的EventCenter中，submit_to有提交事务接口，有开启线程接口  
 AsyncMessenger开启Processor的线程，开启dispatch_queue的流程  
 
 AsyncConnection维护两个终端的逻辑会话。  
@@ -267,6 +268,19 @@ DispatchQueue包含所有需要分发消息的连接，按照消息的优先级�
 EventCenter，所有的网络事件都在这里注册，监听，使用epoll, kqueue, select等。  
 
 Worker拥有EventCenter
+
+CephContext  
+CephContext表明一个上下文，由一个库的使用者所持有。
+在一个进程中可能有多个CephContext  
+
+对于守护进程和工具程序，应当值有一个CephContext，
+CephContext包含配置，输出对象，其它任意可能需要传到libcommon库中的函数调用。  
+CephContext维护一个单例对象映射集合，
+引用CephContextServiceThread, AdminSocket, spinlock, PerfCountersCollection, md_config_obs_t, CephContextHook, HeartbeatMap, ForkWatcher, CryptoHandler, CephContextObs, PluginRegistry, CrushLocation, PerfCounters, 
+
+osd中事件触发形式，一个是和其它进程的交互，也就是接收Messenger的消息，处理其它进程发送来的消息命令，一个是注册定时器事件，注册回调接口，定期执行一些事件，比如，数据清洗。
+
+
 
 END  
   
