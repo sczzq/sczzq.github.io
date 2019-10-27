@@ -9,6 +9,8 @@ tags:
 - post
 ---
 
+> some step to enable ubuntu alsa sound output
+
 ## requirement
 
 - alsa-base
