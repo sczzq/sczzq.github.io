@@ -35,8 +35,7 @@ Edit .vimrc in home directory.
 
 Here is some basic item.
 
-```c
-
+```vim
 if has("syntax")
 	syntax on
 endif
@@ -67,7 +66,6 @@ set cursorline
 set ruler
 set autowrite
 set magic
-
 ```
 
 
