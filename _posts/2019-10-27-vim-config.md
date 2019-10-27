@@ -35,7 +35,7 @@ Edit .vimrc in home directory.
 
 Here is some basic item.
 
-```vim
+```
 if has("syntax")
 	syntax on
 endif
