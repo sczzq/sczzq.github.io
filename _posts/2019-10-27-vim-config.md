@@ -39,20 +39,15 @@ Here is some basic item.
 if has("syntax")
 	syntax on
 endif
-
 filetype on
 filetype plugin on
-
 set background=dark
-
 if has("autocmd")
 	au BufReadPost * if line("'\'")>1 && line("'\'") <= line("$") | exe normal !g'\'" | endif
 	filetype plugin indent on
 endif
-
 set autoindent
 set cindent
-
 set smartindent
 set tabstop=4
 set softtabstop=4
