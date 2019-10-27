@@ -69,8 +69,4 @@ set magic
 ```
 
 
-## third
-
-Restart all vim processes.
-
 
