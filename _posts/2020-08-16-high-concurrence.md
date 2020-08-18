@@ -235,6 +235,8 @@ In addition with cache data, in HAHS mode.
 - event processor
 - worker processor
 - fd set
+- timer thread  
+- mutex, for fd set  
 
 
 
