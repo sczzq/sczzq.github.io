@@ -1,9 +1,10 @@
 ---
-title: Redis infomation
+title: Redis -- Reading document
 date: 2020-08-21
 categories:
 - Tech
 - NoSQL
+- Redis
 tags:
 - blog
 - post
